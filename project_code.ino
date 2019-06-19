@@ -5,38 +5,33 @@ void setup() {
 Serial.begin(115200);
 int status;
 status = IMU.begin();
-Serial.print(status);
-Serial.println();
+//Serial.print(status);
+//Serial.println();
+IMU.calibrateAccel();
 }
 void loop() {
+
 IMU.readSensor();
+/*int status = IMU.calibrateAccel();*/
+float axb,axs,ayb,ays,azb,azs;
+axb = IMU.getAccelBiasX_mss();
+axs = IMU.getAccelScaleFactorX();
+ayb = IMU.getAccelBiasY_mss();
+ays = IMU.getAccelScaleFactorY();
+azb = IMU.getAccelBiasZ_mss();
+azs = IMU.getAccelScaleFactorZ();
+IMU.setAccelCalX(axb,axs);
+IMU.setAccelCalY(ayb,ays);
+IMU.setAccelCalZ(azb,azs);
 //print acceleration in all three directions
 Serial.print("X: ");
-Serial.print(IMU.getAccelX_mss(),6);
+Serial.print(IMU.getAccelX_mss());
 Serial.print("        ");
 Serial.print("Y: ");
-Serial.print(IMU.getAccelY_mss(),6);
+Serial.print(IMU.getAccelY_mss());
 Serial.print("        ");
 Serial.print("Z: ");
-Serial.print(IMU.getAccelZ_mss(),6);
+Serial.print(IMU.getAccelZ_mss());
 Serial.print("        ");
 Serial.println();
-delay(1000);
-
-/*//print the gyroscope value for the degree of turn in the respective axes
-Serial.print("GX: ");
-Serial.print(IMU.getGyroX_rads(),6);
-Serial.print("       ");
-Serial.print("GY: ");
-Serial.print(IMU.getGyroY_rads(),6);
-Serial.print("       ");
-Serial.print("GZ: ");
-Serial.print(IMU.getGyroZ_rads(),6);
-Serial.print("       ");
-Serial.println();
-delay(1000);
-
-Serial.print(IMU.getTemperature_C(),6);
-Serial.println();
-delay(1000);*/
 }
