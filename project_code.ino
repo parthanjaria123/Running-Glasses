@@ -30,30 +30,44 @@ float ax = IMU.getAccelX_mss();
 float ay = IMU.getAccelY_mss();
 //float az = IMU.getAccelZ_mss();
 //prints out acceleration
-ax-=0.84;
-ay-=1.05;
-Serial.print("X:");
+ax-=0.67;//0.75
+ay-=1.13;//1.05
+/*Serial.print("X:");
 Serial.println(ax);
 Serial.print("Y:");
-Serial.println(ay);
+Serial.println(ay);*/
+delay(0.5);
 
 //prints out velocity
 
-/*delay(100);
 float axf = IMU.getAccelX_mss();
 float ayf = IMU.getAccelY_mss();
-//float azf = IMU.getAccelZ_mss();
+axf-=0.75;
+ayf-=1.05;
 
 float avgaccx = (ax+axf)/2;
 float avgaccy = (ay+ayf)/2;
-//float avgvelz = (az+azf)/2;
 
-float avgvelx = avgaccx*0.1;
-float avgvely = avgaccy*0.1;
+if(avgaccx<0.10&&avgaccx>-0.10){
+  avgaccx=0;
+}
+if(avgaccy<0.10&&avgaccy>-0.10){
+  avgaccy=0;
+}
 
-velocity = (velocity + sqrt(pow(avgvelx,2)+pow(avgvely,2)));
+float avgvelx = avgaccx*0.0005;
+float avgvely = avgaccy*0.0005;
 
-Serial.println(2.23694*velocity);*/
+float change = sqrt(pow(avgvelx,2)+pow(avgvely,2));
+
+if(avgaccx<0){
+  velocity = velocity - change;
+}
+
+else{
+velocity = velocity + change;
+}
+Serial.println((2.23694*velocity));
 
 
 }
