@@ -6,10 +6,19 @@
 
 #define color WHITE
 
+//variables for pace data
 float spd;
 float pace;
 float mlge;
-boolean post;
+
+//variables for mileage data
+float mileage=0;
+float longitude;
+float latitude;
+
+//variables for altitude data
+float altini;
+float deltalt;
 
 SoftwareSerial ss(3,4);
 TinyGPSPlus gps;
@@ -26,6 +35,9 @@ void setup()
  }
 
  display.clearDisplay();
+
+ longitude = gps.location.lng();
+ latitude = gps.location.lat();
 
 }
 
@@ -49,11 +61,28 @@ void loop()
     pace = ((1/spd)*60);
     Serial.println(pace,3);
     display.clearDisplay();
+
+    float newlong = gps.location.lng();
+    float newlat = gps.location.lat();
+
+    Serial.print("Mileage: ");
+    mileage += gps.distanceBetween(newlat, newlong, latitude, longitude)/1000;
+    Serial.println(mileage);
+    
+    latitude = newlat;
+    longitude = newlong;
+
+    Serial.print("Change in altitude (m): ");
+    float newalt = gps.altitude.meters();
+    deltalt = newalt - altini;
+    Serial.println(deltalt);
+    
     printPacebyPRINT(0,0);
     printMLGEbyPRINT(0,10);
     printPOSTbyPRINT(0,21);
     
-    delay(1000);
+    delay(2000);
+    
   }
  }
 }
@@ -65,7 +94,7 @@ display.print("P A C E : ");
 if (pace>30){
   display.print(">30 ");
 }
-if(pace>20){
+else if(pace>20){
   display.print((int) pace);
 }
 else if(pace>10){
@@ -81,13 +110,15 @@ void printMLGEbyPRINT(int xCursor, int yCursor){
 display.setCursor(xCursor,yCursor);
 display.setTextSize(1);
 display.setTextColor(color);
-display.print("M L G E : here");
+display.print("M L G E : ");
+display.print(mileage, 3);
 display.display();
 }
 void printPOSTbyPRINT(int xCursor,int yCursor){
 display.setCursor(xCursor,yCursor);
 display.setTextSize(1);
 display.setTextColor(color);
-display.print("P O S T : here");
+display.print(" A L T: ");
+display.print(deltalt);
 display.display();
   }
