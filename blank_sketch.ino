@@ -19,6 +19,7 @@ float latitude;
 //variables for altitude data
 float altini;
 float deltalt;
+float totalalt;
 
 SoftwareSerial ss(3,4);
 TinyGPSPlus gps;
@@ -66,8 +67,9 @@ void loop()
     float newlat = gps.location.lat();
 
     Serial.print("Mileage: ");
-    mileage += gps.distanceBetween(newlat, newlong, latitude, longitude)/1000;
-    Serial.println(mileage);
+    float changeinmileage = haversine(latitude, longitude, newlat, newlong);
+    mileage+=changeinmileage;
+    Serial.println((int) mileage);
     
     latitude = newlat;
     longitude = newlong;
@@ -122,3 +124,14 @@ display.print(" A L T: ");
 display.print(deltalt);
 display.display();
   }
+double haversine(double lat1, double lon1, double lat2, double lon2) {
+    const double rEarth = 6371000.0; // in meters
+    double x = pow( sin( ((lat2 - lat1)*M_PI/180.0) / 2.0), 2.0 );
+    double y = cos(lat1*M_PI/180.0) * cos(lat2*M_PI/180.0);
+    double z = pow( sin( ((lon2 - lon1)*M_PI/180.0) / 2.0), 2.0 );
+    double a = x + y * z;
+    double c = 2.0 * atan2(sqrt(a), sqrt(1.0-a));
+    double d = rEarth * c;
+    // Serial.printlnf("%12.9f, %12.9f, %12.9f, %12.9f, %12.9f, %12.9f", x, y, z, a, c, d);
+    return d; // in meters
+}
