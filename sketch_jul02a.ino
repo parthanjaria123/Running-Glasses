@@ -8,23 +8,14 @@ void setup() {
 ss.begin(9600);
 Serial.begin(115200);
 
-float lat1 = latitude();
-float lng1 = longitude();
-
-Serial.println(lat1,6);
-Serial.println(lng1,6);
+Serial.println(latitude(),6);
+Serial.println(longitude(),6);
 
 delay(10000);
 
-float lat2 = latitude();
-float lng2 = longitude();
+Serial.println(latitude(),6);
+Serial.println(longitude(),6);
 
-Serial.println(lat2,6);
-Serial.println(lng2,6);
-
-/*Serial.println("Dist: ");
-Serial.println(gps.distanceBetween(lat1,lng1,lat2,lng2));*/
-  
 }
 
 void loop() {
@@ -53,7 +44,7 @@ float latitude(){
 while(true){
 if(ss.available()>0){
 if(gps.encode(ss.read())){
-if(gps.location.isValid()){
+if(gps.location.isUpdated()){
   return (gps.location.lat());
 }
 }
@@ -65,7 +56,7 @@ float longitude(){
 while(true){
 if(ss.available()>0){
 if(gps.encode(ss.read())){
-if(gps.location.isValid()){
+if(gps.location.isUpdated()){
   return (gps.location.lng());
 }
 }
