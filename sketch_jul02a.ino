@@ -8,12 +8,19 @@ SoftwareSerial ss(3,4);
 TinyGPSPlus gps;
 Adafruit_SSD1306 display(128,32,&Wire,4);
 
+float inilat;
+float inilong;
+float finallat;
+float finallong;
+
 float distance=0;
 float altIni;
 
+int buttonPin = 5;
+
 void setup() {
   ss.begin(9600);
-  Serial.begin(115200);
+  Serial.begin(9600);
   
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println(F("Allocation failed"));
@@ -22,9 +29,29 @@ void setup() {
   
   display.clearDisplay();
   altIni = alt();
+
+  inilong = longitude();
+  inilat = latitude();
 }
 
 void loop() {
+
+  if(digitalRead(buttonPin)== HIGH){
+    finallong = longitude();
+    finallat = latitude();
+
+    Serial.println(inilat,10);
+    Serial.println(inilong,10);
+    Serial.println(finallat,10);
+    Serial.println(finallong,10);
+    
+    while(true){
+      
+    }
+  }
+
+  else{
+  
   float lat1 = latitude();
   float lng1 = longitude();
 
@@ -68,7 +95,7 @@ void loop() {
   display.print(" A L T: ");
   display.print(changeInAlt,2);
   display.display();
-  
+  }
 }
 
 float latitude(){
