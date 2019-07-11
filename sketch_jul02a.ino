@@ -32,6 +32,10 @@ void setup() {
 
   inilong = longitude();
   inilat = latitude();
+
+  Serial.println(inilat,10);
+  Serial.println(inilong,10);
+  
 }
 
 void loop() {
@@ -39,14 +43,11 @@ void loop() {
   if(digitalRead(buttonPin)== HIGH){
     finallong = longitude();
     finallat = latitude();
-
-    Serial.println(inilat,10);
-    Serial.println(inilong,10);
+    
     Serial.println(finallat,10);
     Serial.println(finallong,10);
-    
+    Serial.println(1000);
     while(true){
-      
     }
   }
 
@@ -59,6 +60,9 @@ void loop() {
 
   float lat2 = latitude();
   float lng2 = longitude();
+
+  Serial.println(lat2,10);
+  Serial.println(lng2,10);
   
   float changeInDistance = gps.distanceBetween(lat1,lng1,lat2,lng2);
   distance += changeInDistance;

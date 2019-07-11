@@ -15,14 +15,14 @@ longitude_list = []
 
 #output_file = open(write_to_file_path, "w+");
 ser = serial.Serial(serial_port,baud_rate)
-while z<=4:
+while True:
     line = ser.readline()
     line = line.decode("utf - 8")
     line = float(line)
     #output_file.write(line)
-    if(line==1000):
+    if(int(line)==1000):
         break;
-    else if(z%2==0):
+    elif(z%2==0):
         longitude_list.append(line)
         print(line)
         z+=1
